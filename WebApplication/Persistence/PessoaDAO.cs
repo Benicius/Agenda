@@ -5,6 +5,7 @@ using System.Web;
 using System.Data.SqlClient;
 using WebApplication.Models;
 using WebApplication.Persistence;
+using System.Text;
 
 namespace WebApplication.Models.PessoaDAO
 {
@@ -15,59 +16,89 @@ namespace WebApplication.Models.PessoaDAO
             try
             {
                 AbrirConexao();
-                Cmd = new SqlCommand("insert into Pessoa(Nome, CPF, Endereco) " +
-                    "values(@v1, @v2, @v3) DECLARE @ID INT SET @ID = @@IDENTITY RETURN @ID", Con);
-
-                var CmdEndereco = new SqlCommand("insert into Endereco(Logradouro, Numero, CEP, Bairro, Cidade, Estado) output inserted.Id " +
-                     "values(@v4, @v5, @v6, @v7, @v8, @v9)", Con);
-
-                var CmdTelefone = new SqlCommand("insert into Telefone(DDD, Numero, Tipo) output inserted.IdTelefone " +
-                    "values(@v10, @v11, @v12)", Con);
-
-                var CmdTipoTelefone = new SqlCommand("insert into TipoTelefone(Tipo) output inserted.IdTipoTelefone " +
-                    "values(@v13)", Con);
-
-                var CmdPessoaTelefone = new SqlCommand("insert into Pessoa_Telefone(Id_Pessoa, Id_Telefone) output inserted.Id_Pessoa, inserted.Id_Telefone " +
-                    "values(@v14, @v15)", Con);
-
-                Cmd.Parameters.AddWithValue("@v1", p.Nome);
-                Cmd.Parameters.AddWithValue("@v2", p.CPF);
-
-                SqlDataReader reader = Cmd.ExecuteReader();
-
-                var IdPessoa = 0;
-
-                while (reader.Read())
-                {
-                    IdPessoa = int.Parse( reader[0].ToString());
-                }
+                StringBuilder sqlComando = new StringBuilder();
+                sqlComando.Append($"INSERT INTO Endereco(                           ");
+                sqlComando.Append($"                     Logradouro,                ");
+                sqlComando.Append($"                         Numero,                ");
+                sqlComando.Append($"                            CEP,                ");
+                sqlComando.Append($"                         Bairro,                ");
+                sqlComando.Append($"                         Cidade,                ");
+                sqlComando.Append($"                         Estado                 ");
+                sqlComando.Append($"                    )                           ");
+                sqlComando.Append($"              Values(                           ");
+                sqlComando.Append($"                     '{p.Endereco.Logradouro}', ");
+                sqlComando.Append($"                           {p.Endereco.Numero}, ");
+                sqlComando.Append($"                              {p.Endereco.CEP}, ");
+                sqlComando.Append($"                         '{p.Endereco.Bairro}', ");
+                sqlComando.Append($"                         '{p.Endereco.Cidade}', ");
+                sqlComando.Append($"                         '{p.Endereco.Estado}'  ");
+                sqlComando.Append($"                    )                           ");
+                sqlComando.Append($"SET @ID = @@IDENTITY                            ");
+                sqlComando.Append($"RETURN @ID                                      ");
+                Cmd = new SqlCommand(sqlComando.ToString(), Con);
+                var idEndereco = Cmd.ExecuteScalar();
+                Cmd = null; //Limpar para usar o mesmo objeto para o Endereço
+                sqlComando.Clear();
+                sqlComando.Append($"INSERT INTO Pessoa(               ");
+                sqlComando.Append($"                   Nome,          ");
+                sqlComando.Append($"                   CPF,           ");
+                sqlComando.Append($"                   Endereco       ");
+                sqlComando.Append($"                  )               ");
+                sqlComando.Append($"            VALUES(               ");
+                sqlComando.Append($"                   '{p.Nome}',    ");
+                sqlComando.Append($"                   '{p.CPF}',     ");
+                sqlComando.Append($"                    {idEndereco}  ");
+                sqlComando.Append($"                  )               ");
+                sqlComando.Append($"SET @ID = @@IDENTITY              ");
+                sqlComando.Append($"RETURN @ID                        ");
+                Cmd = new SqlCommand(sqlComando.ToString(), Con);
+                var idPessoa = Cmd.ExecuteScalar();
+                Cmd = null; //Limpar o Endereço para cadastrar outro objeto
+                sqlComando.Clear();
 
                 
-
-                CmdEndereco.Parameters.AddWithValue("@v4", p.Endereco.Logradouro);
-                CmdEndereco.Parameters.AddWithValue("@v5", p.Endereco.Numero);
-                CmdEndereco.Parameters.AddWithValue("@v6", p.Endereco.CEP);
-                CmdEndereco.Parameters.AddWithValue("@v7", p.Endereco.Bairro);
-                CmdEndereco.Parameters.AddWithValue("@v8", p.Endereco.Cidade);
-                CmdEndereco.Parameters.AddWithValue("@v9", p.Endereco.Estado);
-
-                var enderecoId = (Int32)CmdEndereco.ExecuteScalar();
-                Cmd.Parameters.AddWithValue("@v3", enderecoId);
-
-                foreach(Telefone telefone in p.Telefones)
+                foreach(var telefone in p.Telefones)
                 {
-                    CmdTelefone.Parameters.AddWithValue("@v10", telefone.Numero);
-                    CmdTelefone.Parameters.AddWithValue("@v11", telefone.Numero);
-                    CmdTelefone.Parameters.AddWithValue("@v13", telefone.TipoTelefone.Tipo);
-
-                    var tipoTeledoneID = (Int32)CmdTipoTelefone.ExecuteScalar();
-                    CmdTelefone.Parameters.AddWithValue("@v12", telefone.Numero);
-
-                    p.Telefones.Add(telefone);
+                    sqlComando.Append($"INSERT TIPO TipoTelefone(                               ");
+                    sqlComando.Append($"                         Tipo                           ");
+                    sqlComando.Append($"                        )                               ");
+                    sqlComando.Append($"                  VALUES(                               ");
+                    sqlComando.Append($"                         '{telefone.TipoTelefone.Tipo}' ");
+                    sqlComando.Append($"                        )                               ");
+                    sqlComando.Append($"SET @ID = @@IDENTITY                                    ");
+                    sqlComando.Append($"RETURN @ID                                              ");
+                    Cmd = new SqlCommand(sqlComando.ToString(), Con);
+                    var idTipoTelefone = Cmd.ExecuteScalar();
+                    Cmd = null; //Limpar o Tipo Telefone Cadastrado para Cadastrar o Telefone
+                    sqlComando.Clear();
+                    sqlComando.Append($"INSERT INTO Telefone(                   ");
+                    sqlComando.Append($"                        DDD,            ");
+                    sqlComando.Append($"                     Numero,            ");
+                    sqlComando.Append($"                       Tipo             ");
+                    sqlComando.Append($"                    )                   ");
+                    sqlComando.Append($"              VALUES(                   ");
+                    sqlComando.Append($"                        {telefone.DDD}, ");
+                    sqlComando.Append($"                     {telefone.Numero}, ");
+                    sqlComando.Append($"                      {idTipoTelefone}, ");
+                    sqlComando.Append($"                    )                   ");
+                    sqlComando.Append($"SET @ID = @@IDENTITY                    ");
+                    sqlComando.Append($"RETURN @ID                              ");
+                    Cmd = new SqlCommand(sqlComando.ToString(), Con);
+                    var idTelefone = Cmd.ExecuteScalar();
+                    Cmd = null; //Limpar o Tipo Telefone Cadastrado para Cadastrar o Telefone
+                    sqlComando.Clear();
+                    sqlComando.Append($"INSERT INTO Pessoa_Telefone(             ");
+                    sqlComando.Append($"                            Id_Pessoa,   ");
+                    sqlComando.Append($"                            Id_Telefone  ");
+                    sqlComando.Append($"                           )             ");
+                    sqlComando.Append($"                     VALUES(             ");
+                    sqlComando.Append($"                            {idPessoa},  ");
+                    sqlComando.Append($"                            {idTelefone} ");
+                    sqlComando.Append($"                           )             ");
+                    Cmd = new SqlCommand(sqlComando.ToString(), Con);
+                    Cmd.ExecuteNonQuery();
+                    Cmd = null; //Limpara para voltar todo o fluxo
                 }
-
-
-                Cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
