@@ -20,10 +20,23 @@
                 </div>
                 
                 <div class="row">
-                    <div>
-                        <asp:TextBox ID="txtCPF" runat="server" placeholder="Número do CPF" CssClass="form-control"/>
-                        <asp:Button ID="btnPesquisa" runat="server" Text="Pesquisar"/>
-                    </div>
+                    <asp:Panel runat="server" BorderStyle="Solid" BorderWidth="1px" >
+                        <div class="container">
+                            <br />
+                            <asp:Label runat="server" Font-Bold="true">Pesquisar</asp:Label>
+                            <br />
+                            <div class="col-lg-6">
+                                <asp:Label runat="server">CPF:</asp:Label>
+                                <asp:TextBox ID="txtCPF" runat="server" placeholder="Número do CPF" CssClass="form-control"/>
+                            </div>
+                            <div class="col-lg-6">
+                                <br />
+                                <asp:Button ID="btnPesquisa" runat="server" Text="Pesquisar" CssClass="btn btn-primary" OnClick="btnPesquisarCPF"/>
+                            </div>
+                            <br />
+                        </div>
+                        <br />
+                    </asp:Panel>
                 </div>
                 <br />
                 <div class="row">

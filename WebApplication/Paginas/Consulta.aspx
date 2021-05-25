@@ -27,7 +27,7 @@
                             <asp:BoundField DataField="Nome" HeaderText="Nome" />
                             <asp:BoundField DataField="CPF" HeaderText="CPF" />
                             <asp:BoundField DataField="Endereco.Logradouro" HeaderText="Logradouro" />
-                            <asp:BoundField DataField="TeleFone.Numero" HeaderText="Numero" />
+                            <asp:BoundField DataField="Telefone.Numero" HeaderText="Numero" />
                         </Columns>
                         <RowStyle CssClass="cursor-pointer" />
 

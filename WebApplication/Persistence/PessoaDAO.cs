@@ -168,7 +168,7 @@ namespace WebApplication.Models.PessoaDAO
             try
             {
                 AbrirConexao();
-                Cmd = new SqlCommand("select p.Nome, p.CPF, t.Numero, e.Logradouro " +
+                Cmd = new SqlCommand("select p.Nome, p.CPF, t.Numero, e.Logradouro, e.Numero, e.CEP, e.Bairro, e.Cidade, e.Estado " +
                     "from Pessoa_Telefone pt " +
                     "inner join Pessoa p on p.Id = pt.Id_Pessoa " +
                     "inner join Endereco e on e.Id = p.Endereco " +
@@ -179,15 +179,21 @@ namespace WebApplication.Models.PessoaDAO
 
                 Dr = Cmd.ExecuteReader();
 
-                Pessoa p = new Pessoa();
+                Pessoa p = null;
 
                 if (Dr.Read())
                 {
+                    p = new Pessoa();
                     p.Nome = Convert.ToString(Dr["Nome"]);
                     p.CPF = Convert.ToInt64(Dr["CPF"]);
 
                     p.Endereco = new Endereco();
                     p.Endereco.Logradouro = Convert.ToString(Dr["Logradouro"]);
+                    p.Endereco.Numero = Convert.ToInt32(Dr["Numero"]);
+                    p.Endereco.CEP = Convert.ToInt32(Dr["CEP"]);
+                    p.Endereco.Bairro = Convert.ToString(Dr["Bairro"]);
+                    p.Endereco.Cidade = Convert.ToString(Dr["Cidade"]);
+                    p.Endereco.Estado = Convert.ToString(Dr["Estado"]);
 
                     return p;
                 }
