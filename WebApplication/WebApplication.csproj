@@ -267,6 +267,7 @@
     <Compile Include=".aspx.designer.cs">
       <DependentUpon>.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\Teste.cs" />
     <Compile Include="Default.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>Default.aspx</DependentUpon>
@@ -279,7 +280,6 @@
     </Compile>
     <Compile Include="Models\Pessoa.cs" />
     <Compile Include="Models\Endereco.cs" />
-    <Compile Include="Models\Teste.cs" />
     <Compile Include="Paginas\Cadastro.aspx.cs">
       <DependentUpon>Cadastro.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -335,9 +335,7 @@
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />

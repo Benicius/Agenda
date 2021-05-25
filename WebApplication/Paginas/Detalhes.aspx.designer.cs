@@ -24,6 +24,24 @@ namespace WebApplication.Paginas
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
+        /// Controle txtCPF.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCPF;
+
+        /// <summary>
+        /// Controle btnPesquisa.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnPesquisa;
+
+        /// <summary>
         /// Controle lblNome.
         /// </summary>
         /// <remarks>
@@ -51,13 +69,13 @@ namespace WebApplication.Paginas
         protected global::System.Web.UI.WebControls.Label lblCPF;
 
         /// <summary>
-        /// Controle txtCPF.
+        /// Controle txtCPF2.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCPF;
+        protected global::System.Web.UI.WebControls.TextBox txtCPF2;
 
         /// <summary>
         /// Controle Table.

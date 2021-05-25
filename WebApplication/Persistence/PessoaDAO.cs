@@ -6,99 +6,100 @@ using System.Data.SqlClient;
 using WebApplication.Models;
 using WebApplication.Persistence;
 using System.Text;
+using System.Data;
 
 namespace WebApplication.Models.PessoaDAO
 {
     public class PessoaDAO : Conexao
     {
+
+        private int validarTipo(int Tipo)
+        {
+            DataTable dt = new DataTable();
+            
+
+            SqlDataReader reader;
+            try
+            {
+                AbrirConexao();
+                Cmd = new SqlCommand("select * from TipoTelefone where IdTipoTelefone = @v1", Con);
+                
+                Cmd.Parameters.AddWithValue("@v1", Tipo);
+                reader = Cmd.ExecuteReader();
+                dt.Load(reader);
+                if (dt == null || dt.Rows.Count <= 0)
+                {
+                    string tipo = "Residencia";
+                    var CmdTipoTelefone = new SqlCommand("insert into TipoTelefone(Tipo) output inserted.IdTipoTelefone " +
+                        "values(@v2)", Con);
+                    CmdTipoTelefone.Parameters.AddWithValue("@v2", tipo);
+                    
+                    Tipo = (Int32)CmdTipoTelefone.ExecuteScalar();
+
+                    return Tipo;
+
+                }
+                return Tipo;
+                
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                FecharConexao();
+            }
+        }
+
         public void Salvar(Pessoa p)
         {
             try
             {
                 AbrirConexao();
-                StringBuilder sqlComando = new StringBuilder();
-                sqlComando.Append($"INSERT INTO Endereco(                           ");
-                sqlComando.Append($"                     Logradouro,                ");
-                sqlComando.Append($"                         Numero,                ");
-                sqlComando.Append($"                            CEP,                ");
-                sqlComando.Append($"                         Bairro,                ");
-                sqlComando.Append($"                         Cidade,                ");
-                sqlComando.Append($"                         Estado                 ");
-                sqlComando.Append($"                    )                           ");
-                sqlComando.Append($"              Values(                           ");
-                sqlComando.Append($"                     '{p.Endereco.Logradouro}', ");
-                sqlComando.Append($"                           {p.Endereco.Numero}, ");
-                sqlComando.Append($"                              {p.Endereco.CEP}, ");
-                sqlComando.Append($"                         '{p.Endereco.Bairro}', ");
-                sqlComando.Append($"                         '{p.Endereco.Cidade}', ");
-                sqlComando.Append($"                         '{p.Endereco.Estado}'  ");
-                sqlComando.Append($"                    )                           ");
-                sqlComando.Append($"SET @ID = @@IDENTITY                            ");
-                sqlComando.Append($"RETURN @ID                                      ");
-                Cmd = new SqlCommand(sqlComando.ToString(), Con);
-                var idEndereco = Cmd.ExecuteScalar();
-                Cmd = null; //Limpar para usar o mesmo objeto para o Endereço
-                sqlComando.Clear();
-                sqlComando.Append($"INSERT INTO Pessoa(               ");
-                sqlComando.Append($"                   Nome,          ");
-                sqlComando.Append($"                   CPF,           ");
-                sqlComando.Append($"                   Endereco       ");
-                sqlComando.Append($"                  )               ");
-                sqlComando.Append($"            VALUES(               ");
-                sqlComando.Append($"                   '{p.Nome}',    ");
-                sqlComando.Append($"                   '{p.CPF}',     ");
-                sqlComando.Append($"                    {idEndereco}  ");
-                sqlComando.Append($"                  )               ");
-                sqlComando.Append($"SET @ID = @@IDENTITY              ");
-                sqlComando.Append($"RETURN @ID                        ");
-                Cmd = new SqlCommand(sqlComando.ToString(), Con);
-                var idPessoa = Cmd.ExecuteScalar();
-                Cmd = null; //Limpar o Endereço para cadastrar outro objeto
-                sqlComando.Clear();
+                Cmd = new SqlCommand("insert into Pessoa(Nome, CPF, Endereco) output inserted.Id " +
+                    "values(@v1, @v2, @v3)", Con);
 
-                
-                foreach(var telefone in p.Telefones)
+                var CmdEndereco = new SqlCommand("insert into Endereco(Logradouro, Numero, CEP, Bairro, Cidade, Estado) output inserted.Id " +
+                     "values(@v4, @v5, @v6, @v7, @v8, @v9)", Con);
+
+                Cmd.Parameters.AddWithValue("@v1", p.Nome);
+                Cmd.Parameters.AddWithValue("@v2", p.CPF);
+
+                CmdEndereco.Parameters.AddWithValue("@v4", p.Endereco.Logradouro);
+                CmdEndereco.Parameters.AddWithValue("@v5", p.Endereco.Numero);
+                CmdEndereco.Parameters.AddWithValue("@v6", p.Endereco.CEP);
+                CmdEndereco.Parameters.AddWithValue("@v7", p.Endereco.Bairro);
+                CmdEndereco.Parameters.AddWithValue("@v8", p.Endereco.Cidade);
+                CmdEndereco.Parameters.AddWithValue("@v9", p.Endereco.Estado);
+
+                var enderecoId = (Int32)CmdEndereco.ExecuteScalar();
+                Cmd.Parameters.AddWithValue("@v3", enderecoId);
+
+                var pessoaId = (Int32)Cmd.ExecuteScalar();
+                int tipoTelefone = validarTipo(10);
+                AbrirConexao();
+                foreach (var tel in p.Telefones)
                 {
-                    sqlComando.Append($"INSERT TIPO TipoTelefone(                               ");
-                    sqlComando.Append($"                         Tipo                           ");
-                    sqlComando.Append($"                        )                               ");
-                    sqlComando.Append($"                  VALUES(                               ");
-                    sqlComando.Append($"                         '{telefone.TipoTelefone.Tipo}' ");
-                    sqlComando.Append($"                        )                               ");
-                    sqlComando.Append($"SET @ID = @@IDENTITY                                    ");
-                    sqlComando.Append($"RETURN @ID                                              ");
-                    Cmd = new SqlCommand(sqlComando.ToString(), Con);
-                    var idTipoTelefone = Cmd.ExecuteScalar();
-                    Cmd = null; //Limpar o Tipo Telefone Cadastrado para Cadastrar o Telefone
-                    sqlComando.Clear();
-                    sqlComando.Append($"INSERT INTO Telefone(                   ");
-                    sqlComando.Append($"                        DDD,            ");
-                    sqlComando.Append($"                     Numero,            ");
-                    sqlComando.Append($"                       Tipo             ");
-                    sqlComando.Append($"                    )                   ");
-                    sqlComando.Append($"              VALUES(                   ");
-                    sqlComando.Append($"                        {telefone.DDD}, ");
-                    sqlComando.Append($"                     {telefone.Numero}, ");
-                    sqlComando.Append($"                      {idTipoTelefone}, ");
-                    sqlComando.Append($"                    )                   ");
-                    sqlComando.Append($"SET @ID = @@IDENTITY                    ");
-                    sqlComando.Append($"RETURN @ID                              ");
-                    Cmd = new SqlCommand(sqlComando.ToString(), Con);
-                    var idTelefone = Cmd.ExecuteScalar();
-                    Cmd = null; //Limpar o Tipo Telefone Cadastrado para Cadastrar o Telefone
-                    sqlComando.Clear();
-                    sqlComando.Append($"INSERT INTO Pessoa_Telefone(             ");
-                    sqlComando.Append($"                            Id_Pessoa,   ");
-                    sqlComando.Append($"                            Id_Telefone  ");
-                    sqlComando.Append($"                           )             ");
-                    sqlComando.Append($"                     VALUES(             ");
-                    sqlComando.Append($"                            {idPessoa},  ");
-                    sqlComando.Append($"                            {idTelefone} ");
-                    sqlComando.Append($"                           )             ");
-                    Cmd = new SqlCommand(sqlComando.ToString(), Con);
-                    Cmd.ExecuteNonQuery();
-                    Cmd = null; //Limpara para voltar todo o fluxo
+                    var CmdTelefone = new SqlCommand("insert into Telefone(DDD, Numero, Tipo) output inserted.IdTelefone " +
+                    "values(@v10, @v11, @v12)", Con);
+                    
+                    var CmdPessoaTelefone = new SqlCommand("insert into Pessoa_Telefone(Id_Pessoa, Id_Telefone) " +
+                        "values(@v13, @v14)", Con);
+
+                    CmdTelefone.Parameters.AddWithValue("@v10", tel.DDD);
+                    CmdTelefone.Parameters.AddWithValue("@v11", tel.Numero);
+                    
+                    CmdTelefone.Parameters.AddWithValue("@v12", tipoTelefone);
+
+                    CmdPessoaTelefone.Parameters.AddWithValue("@v13", pessoaId);
+
+                    var telefoneId = (Int32)CmdTelefone.ExecuteScalar();
+                    CmdPessoaTelefone.Parameters.AddWithValue("@v14", telefoneId);
+
+                    CmdPessoaTelefone.ExecuteNonQuery();
                 }
+
             }
             catch (Exception ex)
             {
@@ -162,22 +163,33 @@ namespace WebApplication.Models.PessoaDAO
             }
         }
 
-        public Pessoa PesquisarCpf(string CPF)
+        public Pessoa PesquisarCpf(long CPF)
         {
             try
             {
                 AbrirConexao();
-                Cmd = new SqlCommand("select * from Pessoa where CPF=@v1", Con);
+                Cmd = new SqlCommand("select p.Nome, p.CPF, t.Numero, e.Logradouro " +
+                    "from Pessoa_Telefone pt " +
+                    "inner join Pessoa p on p.Id = pt.Id_Pessoa " +
+                    "inner join Endereco e on e.Id = p.Endereco " +
+                    "inner join Telefone t on t.IdTelefone = pt.Id_Telefone " +
+                    "where p.CPF = @v1", Con);
 
                 Cmd.Parameters.AddWithValue("@v1", CPF);
 
-                Pessoa p = null;
+                Dr = Cmd.ExecuteReader();
+
+                Pessoa p = new Pessoa();
 
                 if (Dr.Read())
                 {
-                    p = new Pessoa();
                     p.Nome = Convert.ToString(Dr["Nome"]);
                     p.CPF = Convert.ToInt64(Dr["CPF"]);
+
+                    p.Endereco = new Endereco();
+                    p.Endereco.Logradouro = Convert.ToString(Dr["Logradouro"]);
+
+                    return p;
                 }
                 return p;
             }
@@ -197,10 +209,11 @@ namespace WebApplication.Models.PessoaDAO
             try
             {
                 AbrirConexao();
-                Cmd = new SqlCommand("select p.id, end.id, p.Nome, p.CPF, end.Logradouro, end.Numero, end.CEP, end.Bairro, end.Cidade, end.Estado" +
-                    "from Pessoa p " +
-                    "inner join Endereco end on end.Id = Pessoa.Endereco" +
-                    "where p.id=@v1 and end.id=@v2", Con);
+                Cmd = new SqlCommand("select p.Nome, p.CPF, t.Numero, e.Logradouro " +
+                    "from Pessoa_Telefone pt " +
+                    "inner join Pessoa p on p.Id = pt.Id_Pessoa " +
+                    "inner join Endereco e on e.Id = p.Endereco " +
+                    "inner join Telefone t on t.IdTelefone = pt.Id_Telefone ", Con);
 
                 Dr = Cmd.ExecuteReader();
 
@@ -212,22 +225,18 @@ namespace WebApplication.Models.PessoaDAO
                     p.Nome = Convert.ToString(Dr["Nome"]);
                     p.CPF = Convert.ToInt64(Dr["CPF"]);
 
-                    Endereco end = new Endereco();
-                    end.Logradouro = Convert.ToString(Dr["Logradouro"]);
-                    end.Numero = Convert.ToInt32(Dr["Numero"]);
-                    end.CEP = Convert.ToInt32(Dr["CEP"]);
-                    end.Bairro = Convert.ToString(Dr["Bairro"]);
-                    end.Cidade = Convert.ToString(Dr["Cidade"]);
-                    end.Estado = Convert.ToString(Dr["Estado"]);
+                    p.Endereco = new Endereco();
+                    p.Endereco.Logradouro = Convert.ToString(Dr["Logradouro"]);
 
-                    p.Endereco.Logradouro = end.Logradouro;
-                    p.Endereco.Numero = end.Numero;
-                    p.Endereco.CEP = end.CEP;
-                    p.Endereco.Bairro = end.Bairro;
-                    p.Endereco.Cidade = end.Cidade;
-                    p.Endereco.Estado = end.Estado;
+                    p.Telefones = new List<Telefone>();
+                    foreach(Telefone tel in p.Telefones)
+                    {
+                        tel.Numero = Convert.ToInt32(Dr["Numero"]);
+                        p.Telefones.Add(tel);
+                    }
 
                     lista.Add(p);
+
                 }
                 return lista;
             }

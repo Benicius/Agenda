@@ -12,7 +12,8 @@ namespace WebApplication.Paginas
 {
     public partial class Consulta : System.Web.UI.Page
     {
-        protected void gridPessoaList(object sender, EventArgs e)
+
+        protected void Page_Load(object sender, EventArgs e)
         {
             try
             {

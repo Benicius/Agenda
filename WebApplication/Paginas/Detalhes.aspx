@@ -18,6 +18,14 @@
                 <div class="row">
                     <h3 class="well">Detalhes da Pessoa</h3>
                 </div>
+                
+                <div class="row">
+                    <div>
+                        <asp:TextBox ID="txtCPF" runat="server" placeholder="Número do CPF" CssClass="form-control"/>
+                        <asp:Button ID="btnPesquisa" runat="server" Text="Pesquisar"/>
+                    </div>
+                </div>
+                <br />
                 <div class="row">
                     <div class="col-lg-6">
                         <asp:Label ID="lblNome" runat="server">Nome:</asp:Label>
@@ -25,7 +33,7 @@
                     </div>
                     <div class="col-lg-6">
                         <asp:Label ID="lblCPF" runat="server">CPF:</asp:Label>
-                        <asp:TextBox ID="txtCPF" runat="server" CssClass="form-control"/>
+                        <asp:TextBox ID="txtCPF2" runat="server" CssClass="form-control"/>
                     </div>
                 </div>
                 <br />

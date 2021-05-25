@@ -17,35 +17,43 @@ namespace WebApplication.Paginas
             try
             {
                 Pessoa p = new Pessoa();
-                p.Nome = txtNome.Text;
-                p.CPF = long.Parse(txtCPF.Text);
+                p.Nome = "Benicius";
+                p.CPF = 0123456789;
 
                 p.Endereco = new Endereco();
 
-                p.Endereco.Logradouro = txtLogradouro.Text;
-                p.Endereco.Numero = int.Parse(txtNumero.Text);
-                p.Endereco.CEP = int.Parse(txtCEP.Text);
-                p.Endereco.Bairro = txtBairro.Text;
-                p.Endereco.Cidade = txtCidade.Text;
-                p.Endereco.Estado = txtEstado.Text;
+                p.Endereco.Logradouro = "Aristides";
+                p.Endereco.Numero = 192;
+                p.Endereco.CEP = 08738120;
+                p.Endereco.Bairro = "chato";
+                p.Endereco.Cidade = "Mogi";
+                p.Endereco.Estado = "SP";
+
+                Telefone tel = new Telefone();
+                tel.DDD = 011;
+                tel.Numero = 47798521;
+                tel.TipoTelefone = new TipoTelefone();
+                tel.TipoTelefone.Tipo = "Celular";
+
+                Telefone tel1 = new Telefone();
+                tel1.DDD = 011;
+                tel1.Numero = 47798521;
+                tel1.TipoTelefone = new TipoTelefone();
+                tel1.TipoTelefone.Tipo = "Comercial";
+
+                p.Telefones = new List<Telefone>();
+
+                p.Telefones.Add(tel);
+                p.Telefones.Add(tel1);
 
                 PessoaDAO d = new PessoaDAO();
                 d.Salvar(p);
-                lblMensagemCadastro.Text = "Pessoa " + p.Nome + " cadastrado com sucesso!";
-
-                txtNome.Text = string.Empty;
-                txtCPF.Text = string.Empty;
-                txtLogradouro.Text = string.Empty;
-                txtNumero.Text = string.Empty;
-                txtCEP.Text = string.Empty;
-                txtBairro.Text = string.Empty;
-                txtCidade.Text = string.Empty;
-                txtEstado.Text = string.Empty;
             }
             catch (Exception ex)
             {
                 lblMensagemCadastro.Text = ex.Message;
             }
         }
+
     }
 }

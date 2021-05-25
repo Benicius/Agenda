@@ -60,7 +60,6 @@
                             </div>
                             <div class="col-lg-2">
                                 <br />
-                                <a href="Index.aspx" class="btn btn-primary">Adicionar</a>
                             </div>
                         </div>
                         <br />

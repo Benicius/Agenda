@@ -24,15 +24,10 @@
                         BackColor="#ccccff">
 
                         <Columns>
-                            <asp:BoundField DataField="Id" HeaderText="Codigo" />
                             <asp:BoundField DataField="Nome" HeaderText="Nome" />
                             <asp:BoundField DataField="CPF" HeaderText="CPF" />
-                            <asp:BoundField DataField="Logradouro" HeaderText="Logradouro" />
-                            <asp:BoundField DataField="Numero" HeaderText="Numero" />
-                            <asp:BoundField DataField="CEP" HeaderText="CEP" />
-                            <asp:BoundField DataField="Bairro" HeaderText="Bairro" />
-                            <asp:BoundField DataField="Cidade" HeaderText="Cidade" />
-                            <asp:BoundField DataField="Estado" HeaderText="Estado" />
+                            <asp:BoundField DataField="Endereco.Logradouro" HeaderText="Logradouro" />
+                            <asp:BoundField DataField="TeleFone.Numero" HeaderText="Numero" />
                         </Columns>
                         <RowStyle CssClass="cursor-pointer" />
 
