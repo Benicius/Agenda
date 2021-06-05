@@ -16,7 +16,8 @@ namespace WebApplication.Persistence
         {
             try
             {
-                Con = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Desenvolvimento\\Agenda\\WebApplication\\App_Data\\AgendaPessoa.mdf;Integrated Security=True");
+                Con = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:" +
+                    "\\Desenvolvimento\\Agenda\\WebApplication\\App_Data\\AgendaPessoa.mdf;Integrated Security=True");
                 Con.Open();
             }
             catch (Exception ex)

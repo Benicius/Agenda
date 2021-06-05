@@ -42,6 +42,15 @@ namespace WebApplication.Paginas
         protected global::System.Web.UI.WebControls.Button btnPesquisa;
 
         /// <summary>
+        /// Controle txtIdPessoa.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtIdPessoa;
+
+        /// <summary>
         /// Controle lblNome.
         /// </summary>
         /// <remarks>
@@ -78,22 +87,22 @@ namespace WebApplication.Paginas
         protected global::System.Web.UI.WebControls.TextBox txtCPF2;
 
         /// <summary>
-        /// Controle Table.
+        /// Controle gridTelefone.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Table Table;
+        protected global::System.Web.UI.WebControls.GridView gridTelefone;
 
         /// <summary>
-        /// Controle Table1HeaderRow.
+        /// Controle txtIdEndereco.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TableHeaderRow Table1HeaderRow;
+        protected global::System.Web.UI.WebControls.TextBox txtIdEndereco;
 
         /// <summary>
         /// Controle lblLogradouro.
@@ -213,21 +222,21 @@ namespace WebApplication.Paginas
         protected global::System.Web.UI.WebControls.Label lblMensagemAtualizar;
 
         /// <summary>
-        /// Controle btnExcluir.
+        /// Controle btnExcluirPessoa.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnExcluir;
+        protected global::System.Web.UI.WebControls.Button btnExcluirPessoa;
 
         /// <summary>
-        /// Controle btnAtualizar.
+        /// Controle btnAtualizarPessoa.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAtualizar;
+        protected global::System.Web.UI.WebControls.Button btnAtualizarPessoa;
     }
 }

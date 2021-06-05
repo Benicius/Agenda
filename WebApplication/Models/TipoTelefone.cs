@@ -7,7 +7,19 @@ namespace WebApplication.Models
 {
     public class TipoTelefone
     {
-        protected int IdTipoTelefone { get; set; }
+        protected int idTipoTelefone { get; set; }
+
+        new public int IdTipoTelefone
+        {
+            get
+            {
+                return idTipoTelefone;
+            }
+            set
+            {
+                idTipoTelefone = value;
+            }
+        }
         public string Tipo { get; set; }
     }
 }

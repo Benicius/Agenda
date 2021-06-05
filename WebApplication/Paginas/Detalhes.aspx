@@ -1,7 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Detalhes.aspx.cs" Inherits="WebApplication.Paginas.Detalhes" %>
-
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -40,6 +38,10 @@
                 </div>
                 <br />
                 <div class="row">
+                    <div class="col-lg-12">
+                        <asp:Label runat="server">Id:</asp:Label>
+                        <asp:TextBox ID="txtIdPessoa" runat="server" CssClass="form-control" ReadOnly="true"/>
+                    </div>
                     <div class="col-lg-6">
                         <asp:Label ID="lblNome" runat="server">Nome:</asp:Label>
                         <asp:TextBox ID="txtNome" runat="server" CssClass="form-control" />
@@ -54,53 +56,23 @@
 
                 <asp:Label runat="server" Font-Bold="true">Telefones</asp:Label>
                 
-                <asp:Table id="Table" runat="server"
-                    class="table"
-                    CellPadding="10" 
-                    GridLines="Both"
-                    HorizontalAlign="Center">
-                    <asp:TableHeaderRow id="Table1HeaderRow" 
-                        BackColor="#337ab7"
-                        runat="server"
-                        HorizontalAlign="Center">
-                        <asp:TableHeaderCell 
-                            Scope="Column" 
-                            Text="DDD" />
-                        <asp:TableHeaderCell  
-                            Scope="Column" 
-                            Text="Número" />
-                        <asp:TableHeaderCell 
-                            Scope="Column" 
-                            Text="Tipo" />
-                    </asp:TableHeaderRow>  
 
-                    <asp:TableRow
-                        HorizontalAlign="Center">
-                        <asp:TableCell>
-                            11
-                        </asp:TableCell>
-                        <asp:TableCell>
-                            95566-4455
-                        </asp:TableCell>
-                        <asp:TableCell>
-                            Celular
-                        </asp:TableCell>
-                    </asp:TableRow>
-                    <asp:TableRow
-                        HorizontalAlign="Center">
-                        <asp:TableCell>
-                            11
-                        </asp:TableCell>
-                        <asp:TableCell>
-                            4789-5566
-                        </asp:TableCell>
-                        <asp:TableCell>
-                            Comercial
-                        </asp:TableCell>
-                    </asp:TableRow>
-                </asp:Table>
+                <asp:GridView 
+                    ID="gridTelefone" 
+                    runat="server"
+                    CssClass="table table-hover table-striped" 
+                    GridLines="None" 
+                    AutoGenerateColumns="false"
+                    BackColor="#ccccff">
+                    <Columns>
+                        <asp:BoundField DataField="IdTelefone" HeaderText="Id" />
+                        <asp:BoundField DataField="DDD" HeaderText="DDD" />
+                        <asp:BoundField DataField="Numero" HeaderText="Numero" />
+                        <asp:BoundField DataField="Tipo" HeaderText="Tipo" />
+                    </Columns>
+                    <RowStyle CssClass="cursor-pointer" />
+                </asp:GridView>
                 <br />
-                
                 <asp:Panel runat="server" BorderStyle="Solid" BorderWidth="1px" >
                     <div class="container">
                         <br />
@@ -108,11 +80,15 @@
                         <div class="container">
                             <br />
                             <div class="row">
+                                <div class="col-lg-1">
+                                    <asp:Label runat="server">Id:</asp:Label>
+                                    <asp:TextBox ID="txtIdEndereco" runat="server" CssClass="form-control" ReadOnly="true"/>
+                                </div>
                                 <div class="col-lg-4">
                                     <asp:Label ID="lblLogradouro" runat="server">Logradouro:</asp:Label>
                                     <asp:TextBox ID="txtLogradouro" runat="server" CssClass="form-control"/>
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg-2">
                                     <asp:Label ID="lblNumero" runat="server">Número:</asp:Label>
                                     <asp:TextBox ID="txtNumero" runat="server" CssClass="form-control"/>
                                 </div>
@@ -141,9 +117,9 @@
                 <p><asp:Label ID="lblMensagemAtualizar" runat="server" /> </p>
 
                 <br />
-                <asp:Button ID="btnExcluir" runat="server" Text="Excluir" CssClass="btn btn-danger" />
-                <asp:Button ID="btnAtualizar" runat="server" Text="Atualizar" CssClass="btn btn-primary" />
-                <a href="Index.aspx" class="btn btn-primary">Voltar</a>
+                <asp:Button ID="btnExcluirPessoa" runat="server" Text="Excluir" CssClass="btn btn-danger" OnClick="btnExcluir"/>
+                <asp:Button ID="btnAtualizarPessoa" runat="server" Text="Atualizar" CssClass="btn btn-primary" OnClick="btnAtualizar"/>
+                <a href="Consulta.aspx" class="btn btn-primary">Voltar</a>
             </div>
         </div>
     </form>

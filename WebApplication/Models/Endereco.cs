@@ -7,7 +7,20 @@ namespace WebApplication.Models
 {
     public class Endereco
     {
-        protected int IdEndereco { get; set; }
+        protected int idEndereco;
+
+        new public int IdEndereco
+        {
+            get
+            {
+                return idEndereco;
+            }
+            set
+            {
+                idEndereco = value;
+            }
+        }
+
         public string Logradouro { get; set; }
         public int Numero { get; set; }
         public int CEP { get; set; }

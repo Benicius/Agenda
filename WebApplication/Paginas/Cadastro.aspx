@@ -1,7 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Cadastro.aspx.cs" Inherits="WebApplication.Paginas.Cadastro" %>
-
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -44,7 +42,7 @@
                 <div class="row">
                     <br />
                     <asp:Panel runat="server" BorderStyle="Solid" BorderWidth="1px" >
-                        <div class="row">
+                        <div class="row" style="padding-left:15px">
                             <br />
                             <div class="col-lg-3">
                                 <asp:Label runat="server">DDD:</asp:Label>
@@ -54,12 +52,19 @@
                                 <asp:Label runat="server">Número:</asp:Label>
                                 <asp:TextBox ID="TextBox2" runat="server" CssClass="form-control"/>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-3 dropdown">
                                 <asp:Label runat="server">Tipo:</asp:Label>
-                                <asp:TextBox ID="TextBox3" runat="server" CssClass="form-control"/>
+                                <br />
+                                <asp:DropDownList ID="ddlMenuOpcao" runat="server" class="btn dropdown-toggle" >
+                                    <asp:ListItem Value="0" Text="Escolha uma opção"/>
+                                    <asp:ListItem Value="1" Text="Celular"/>
+                                    <asp:ListItem Value="2" Text="Residencial"/>
+                                    <asp:ListItem Value="3" Text="Comercial"/>
+                                </asp:DropDownList>
                             </div>
                             <div class="col-lg-2">
                                 <br />
+                                <asp:Button runat="server" Text="Adicionar" CssClass="btn btn-primary"/>
                             </div>
                         </div>
                         <br />
@@ -153,7 +158,7 @@
                         </div>
                     </asp:Panel>
                     <p><asp:Label ID="lblMensagemCadastro" runat="server"/></p>
-                    <a href="Index.aspx" class="btn btn-primary">Voltar</a>
+                    <a href="Consulta.aspx" class="btn btn-primary">Voltar</a>
                     <asp:Button ID="btnCadastro" runat="server" Text="Cadastrar" CssClass="btn btn-primary" OnClick="btnCadastrar"/>
                     <div />
                 </div>

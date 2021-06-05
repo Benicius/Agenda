@@ -1,7 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Consulta.aspx.cs" Inherits="WebApplication.Paginas.Consulta" %>
-
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -21,13 +19,16 @@
                         CssClass="table table-hover table-striped" 
                         GridLines="None" 
                         AutoGenerateColumns="false"
-                        BackColor="#ccccff">
+                        BackColor="#ccccff"
+                        BorderColor="#e3e3e3"
+                        BorderStyle="Solid"
+                        BorderWidth="1px">
 
                         <Columns>
                             <asp:BoundField DataField="Nome" HeaderText="Nome" />
                             <asp:BoundField DataField="CPF" HeaderText="CPF" />
-                            <asp:BoundField DataField="Endereco.Logradouro" HeaderText="Logradouro" />
-                            <asp:BoundField DataField="Telefone.Numero" HeaderText="Numero" />
+                            <asp:BoundField DataField="Logradouro" HeaderText="Logradouro" />
+                            <asp:BoundField DataField="Numero" HeaderText="Número" />
                         </Columns>
                         <RowStyle CssClass="cursor-pointer" />
 
@@ -35,7 +36,8 @@
 
                     <p><asp:Label ID="lblMensagemConsulta" runat="server"/></p>
 
-                    <a href="Index.aspx" class="btn btn-primary">Voltar</a>
+                    <a href="Cadastrp.aspx" class="btn btn-primary">Cadastrar</a>
+                    <a href="Detalhes.aspx" class="btn btn-primary">Ver Detalhes</a>
                 </div>
             </div>
         </div>

@@ -17,29 +17,29 @@ namespace WebApplication.Paginas
             try
             {
                 Pessoa p = new Pessoa();
-                p.Nome = "Benicius";
-                p.CPF = 0123456789;
+                p.Nome = "Will Cirino";
+                p.CPF = 222;
 
                 p.Endereco = new Endereco();
 
-                p.Endereco.Logradouro = "Aristides";
+                p.Endereco.Logradouro = "Rua dos Boy";
                 p.Endereco.Numero = 192;
                 p.Endereco.CEP = 08738120;
-                p.Endereco.Bairro = "chato";
-                p.Endereco.Cidade = "Mogi";
+                p.Endereco.Bairro = "Boy";
+                p.Endereco.Cidade = "Osasco";
                 p.Endereco.Estado = "SP";
 
                 Telefone tel = new Telefone();
                 tel.DDD = 011;
-                tel.Numero = 47798521;
+                tel.Numero = 999995555;
                 tel.TipoTelefone = new TipoTelefone();
-                tel.TipoTelefone.Tipo = "Celular";
+                tel.TipoTelefone.IdTipoTelefone = 2;
 
                 Telefone tel1 = new Telefone();
                 tel1.DDD = 011;
-                tel1.Numero = 47798521;
+                tel1.Numero = 44447777;
                 tel1.TipoTelefone = new TipoTelefone();
-                tel1.TipoTelefone.Tipo = "Comercial";
+                tel1.TipoTelefone.IdTipoTelefone = 1;
 
                 p.Telefones = new List<Telefone>();
 
@@ -48,6 +48,8 @@ namespace WebApplication.Paginas
 
                 PessoaDAO d = new PessoaDAO();
                 d.Salvar(p);
+
+                lblMensagemCadastro.Text = "Pessoa salva com sucesso!";
             }
             catch (Exception ex)
             {
